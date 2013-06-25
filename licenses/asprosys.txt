@@ -1,0 +1,10 @@
+http://www.asprosys.com/Resources/Samples/codesamples.aspx
+http://asprosys.blogspot.com/2009/03/perils-and-pitfalls-of-launching.html
+
+Code Samples for Developers
+
+All code samples linked from here are put in the public domain unless
+explicitly licensed differently in the source code itself. You may use them
+however you wish but we would appreciate proper attribution, please do not pass
+these off as your own work. The code is provided "AS IS" it carries no
+guarantees at all.

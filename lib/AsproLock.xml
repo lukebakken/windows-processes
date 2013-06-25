@@ -1,0 +1,799 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AsproLock</name>
+    </assembly>
+    <members>
+        <member name="T:Asprosys.Security.AccessControl.BaseSecurity">
+            <summary>
+            The base class for all security objects.
+            </summary>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.BaseSecurity.AcceptChanges">
+            <summary>
+            Persists the changes made to the security object. Must be overridden for 
+            custom security objects.
+            </summary>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.BaseSecurity.GetSectionsChanged">
+            <summary>
+            Gets the access control sections that have been changed.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.BaseSecurity.ClearSectionsChanged">
+            <summary>
+            Resets the sections changed flags.
+            </summary>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.BaseSecurity.GetGenericMapping">
+            <summary>
+            Gets the generic mapping associated with the securable object.
+            </summary>
+            <returns>A <see cref="T:Asprosys.Security.AccessControl.GenericMapping"/> associated with this security
+            object type.</returns>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.BaseSecurity.GetMaximumAccessAllowed(System.Runtime.InteropServices.SafeHandle)">
+            <summary> 
+            Gets a bitmask representing the maximum access allowed to this 
+            securable object.
+            </summary>
+            <param name="tokenHandle">The handle to the token for which the 
+            access is being calculated. This must be an impersonation token.</param>
+            <returns>An <see cref="T:System.Int32"/> containing the bitmask of the access 
+            rights that have been granted to the user represented by the token.</returns>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.BaseSecurity.IsAccessAllowed(System.Runtime.InteropServices.SafeHandle,System.Int32)">
+            <summary>
+            Determines whether the user represented by the specified token handle 
+            has been granted access to this securable object.
+            </summary>
+            <param name="tokenHandle">The handle to the token for which the 
+            access is being verified. This must be an impersonation token.</param>
+            <param name="desiredAccess">The desired access.</param>
+            <returns>
+            	<c>true</c> if the desired access is allowed; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.BaseSecurity.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.DesktopAccessRule">
+            <summary>Represents a set of DesktopRights allowed or denied
+            for a user or group. This class cannot be inherited.</summary>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.DesktopAccessRule.#ctor(System.Security.Principal.IdentityReference,Asprosys.Security.AccessControl.DesktopRights,System.Security.AccessControl.AccessControlType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.DesktopAccessRule"/> class.
+            </summary>
+            <param name="identity">The identity of the user to be granted or denied 
+            the associated rights.</param>
+            <param name="desktopRights">The desktop rights allowed or denied.</param>
+            <param name="type">The type of access controlled by the rule.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.DesktopAccessRule.#ctor(System.String,Asprosys.Security.AccessControl.DesktopRights,System.Security.AccessControl.AccessControlType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.DesktopAccessRule"/> class.
+            </summary>
+            <param name="identity">The identity of the user to be granted or denied 
+            the associated rights.</param>
+            <param name="desktopRights">The desktop rights allowed or denied.</param>
+            <param name="type">The type of access controlled by the rule.</param>
+        </member>
+        <member name="P:Asprosys.Security.AccessControl.DesktopAccessRule.DesktopRights">
+            <summary>
+            Gets the desktop rights associated with this rule.
+            </summary>
+            <value>The combination of <see cref="P:Asprosys.Security.AccessControl.DesktopAccessRule.DesktopRights"/> values that defines
+            the rights associated with this rule.</value>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.DesktopAuditRule">
+            <summary>Represents a set of DesktopRights to be audited
+            for a user or group. This class cannot be inherited.</summary>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.DesktopAuditRule.#ctor(System.Security.Principal.IdentityReference,Asprosys.Security.AccessControl.DesktopRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.DesktopAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="desktopRights">The desktop rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.DesktopAuditRule.#ctor(System.String,Asprosys.Security.AccessControl.DesktopRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.DesktopAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="desktopRights">The desktop rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="P:Asprosys.Security.AccessControl.DesktopAuditRule.DesktopRights">
+            <summary>
+            Gets the desktop rights associated with this rule.
+            </summary>
+            <value>The combination of <see cref="P:Asprosys.Security.AccessControl.DesktopAuditRule.DesktopRights"/> values that defines
+            the rights associated with this rule.</value>
+        </member>
+        <member name="F:Asprosys.Security.AccessControl.DesktopRights.ReadObjects">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Asprosys.Security.AccessControl.DesktopRights.CreateWindow">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Asprosys.Security.AccessControl.DesktopRights.CreateMenu">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Asprosys.Security.AccessControl.DesktopRights.HookControl">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Asprosys.Security.AccessControl.DesktopRights.JournalRecord">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Asprosys.Security.AccessControl.DesktopRights.JournalPlayback">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Asprosys.Security.AccessControl.DesktopRights.Enumerate">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Asprosys.Security.AccessControl.DesktopRights.WriteObjects">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Asprosys.Security.AccessControl.DesktopRights.SwitchDesktop">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Asprosys.Security.AccessControl.DesktopRights.Delete">
+            <summary>
+            
+            </summary>f
+        </member>
+        <member name="F:Asprosys.Security.AccessControl.DesktopRights.ReadPermissions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Asprosys.Security.AccessControl.DesktopRights.WritePermissions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Asprosys.Security.AccessControl.DesktopRights.TakeOwnership">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Asprosys.Security.AccessControl.DesktopRights.Synchronize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Asprosys.Security.AccessControl.DesktopRights.Read">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Asprosys.Security.AccessControl.DesktopRights.Write">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Asprosys.Security.AccessControl.DesktopRights.Execute">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Asprosys.Security.AccessControl.DesktopRights.AllAccess">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.DesktopSecurity">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.DesktopSecurity.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.DesktopSecurity"/> class.
+            </summary>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.DesktopSecurity.#ctor(System.String,System.Security.AccessControl.AccessControlSections)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.DesktopSecurity"/> class.
+            </summary>
+            <param name="desktopName">Name of the desktop.</param>
+            <param name="sectionsRequested">The sections requested.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.DesktopSecurity.#ctor(System.IntPtr,System.Security.AccessControl.AccessControlSections)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.DesktopSecurity"/> class.
+            </summary>
+            <param name="desktopHandle">The desktop handle.</param>
+            <param name="sectionsRequested">The sections requested.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.DesktopSecurity.AccessRuleFactory(System.Security.Principal.IdentityReference,System.Int32,System.Boolean,System.Security.AccessControl.InheritanceFlags,System.Security.AccessControl.PropagationFlags,System.Security.AccessControl.AccessControlType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Security.AccessControl.AccessRule"/> class with the specified values.
+            </summary>
+            <param name="identityReference">The identity to which the access rule applies.  It must be an object that can be cast as a <see cref="T:System.Security.Principal.SecurityIdentifier"/>.</param>
+            <param name="accessMask">The access mask of this rule. The access mask is a 32-bit collection of anonymous bits, the meaning of which is defined by the individual integrators.</param>
+            <param name="isInherited">true if this rule is inherited from a parent container.</param>
+            <param name="inheritanceFlags">Specifies the inheritance properties of the access rule.</param>
+            <param name="propagationFlags">Specifies whether inherited access rules are automatically propagated. The propagation flags are ignored if <paramref name="inheritanceFlags"/> is set to <see cref="F:System.Security.AccessControl.InheritanceFlags.None"/>.</param>
+            <param name="type">Specifies the valid access control type.</param>
+            <returns>
+            The <see cref="T:System.Security.AccessControl.AccessRule"/> object that this method creates.
+            </returns>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.DesktopSecurity.AuditRuleFactory(System.Security.Principal.IdentityReference,System.Int32,System.Boolean,System.Security.AccessControl.InheritanceFlags,System.Security.AccessControl.PropagationFlags,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Security.AccessControl.AuditRule"/> class with the specified values.
+            </summary>
+            <param name="identityReference">The identity to which the audit rule applies.  It must be an object that can be cast as a <see cref="T:System.Security.Principal.SecurityIdentifier"/>.</param>
+            <param name="accessMask">The access mask of this rule. The access mask is a 32-bit collection of anonymous bits, the meaning of which is defined by the individual integrators.</param>
+            <param name="isInherited">true if this rule is inherited from a parent container.</param>
+            <param name="inheritanceFlags">Specifies the inheritance properties of the audit rule.</param>
+            <param name="propagationFlags">Specifies whether inherited audit rules are automatically propagated. The propagation flags are ignored if <paramref name="inheritanceFlags"/> is set to <see cref="F:System.Security.AccessControl.InheritanceFlags.None"/>.</param>
+            <param name="flags">Specifies the conditions for which the rule is audited.</param>
+            <returns>
+            The <see cref="T:System.Security.AccessControl.AuditRule"/> object that this method creates.
+            </returns>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.DesktopSecurity.AddAccessRule(Asprosys.Security.AccessControl.DesktopAccessRule)">
+            <summary>
+            Adds the access rule.
+            </summary>
+            <param name="accessRule">The access rule.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.DesktopSecurity.AddAuditRule(Asprosys.Security.AccessControl.DesktopAuditRule)">
+            <summary>
+            Adds the audit rule.
+            </summary>
+            <param name="auditRule">The audit rule.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.DesktopSecurity.RemoveAccessRule(Asprosys.Security.AccessControl.DesktopAccessRule)">
+            <summary>
+            Removes the access rule.
+            </summary>
+            <param name="accessRule">The access rule.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.DesktopSecurity.RemoveAccessRuleAll(Asprosys.Security.AccessControl.DesktopAccessRule)">
+            <summary>
+            Removes the access rule all.
+            </summary>
+            <param name="accessRule">The access rule.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.DesktopSecurity.RemoveAccessRuleSpecific(Asprosys.Security.AccessControl.DesktopAccessRule)">
+            <summary>
+            Removes the access rule specific.
+            </summary>
+            <param name="accessRule">The access rule.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.DesktopSecurity.RemoveAuditRule(Asprosys.Security.AccessControl.DesktopAuditRule)">
+            <summary>
+            Removes the audit rule.
+            </summary>
+            <param name="auditRule">The audit rule.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.DesktopSecurity.RemoveAuditRuleAll(Asprosys.Security.AccessControl.DesktopAuditRule)">
+            <summary>
+            Removes the audit rule all.
+            </summary>
+            <param name="auditRule">The audit rule.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.DesktopSecurity.RemoveAuditRuleSpecific(Asprosys.Security.AccessControl.DesktopAuditRule)">
+            <summary>
+            Removes the audit rule specific.
+            </summary>
+            <param name="auditRule">The audit rule.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.DesktopSecurity.ResetAccessRule(Asprosys.Security.AccessControl.DesktopAccessRule)">
+            <summary>
+            Resets the access rule.
+            </summary>
+            <param name="accessRule">The access rule.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.DesktopSecurity.SetAccessRule(Asprosys.Security.AccessControl.DesktopAccessRule)">
+            <summary>
+            Sets the access rule.
+            </summary>
+            <param name="accessRule">The access rule.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.DesktopSecurity.SetAuditRule(Asprosys.Security.AccessControl.DesktopAuditRule)">
+            <summary>
+            Sets the audit rule.
+            </summary>
+            <param name="auditRule">The audit rule.</param>
+        </member>
+        <member name="P:Asprosys.Security.AccessControl.DesktopSecurity.AccessRightType">
+            <summary>
+            Gets the <see cref="T:System.Type"/> of the securable object associated with this <see cref="T:System.Security.AccessControl.ObjectSecurity"/> object.
+            </summary>
+            <value></value>
+            <returns>
+            The type of the securable object associated with this <see cref="T:System.Security.AccessControl.ObjectSecurity"/> object.
+            </returns>
+        </member>
+        <member name="P:Asprosys.Security.AccessControl.DesktopSecurity.AccessRuleType">
+            <summary>
+            Gets the <see cref="T:System.Type"/> of the object associated with the access rules of this <see cref="T:System.Security.AccessControl.ObjectSecurity"/> object. The <see cref="T:System.Type"/> object must be an object that can be cast as a <see cref="T:System.Security.Principal.SecurityIdentifier"/> object.
+            </summary>
+            <value></value>
+            <returns>
+            The type of the object associated with the access rules of this <see cref="T:System.Security.AccessControl.ObjectSecurity"/> object.
+            </returns>
+        </member>
+        <member name="P:Asprosys.Security.AccessControl.DesktopSecurity.AuditRuleType">
+            <summary>
+            Gets the <see cref="T:System.Type"/> object associated with the audit rules of this <see cref="T:System.Security.AccessControl.ObjectSecurity"/> object. The <see cref="T:System.Type"/> object must be an object that can be cast as a <see cref="T:System.Security.Principal.SecurityIdentifier"/> object.
+            </summary>
+            <value></value>
+            <returns>
+            The type of the object associated with the audit rules of this <see cref="T:System.Security.AccessControl.ObjectSecurity"/> object.
+            </returns>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.DirectoryAccessRule">
+            <summary>Represents a set of DirectoryAccessRights rights allowed or denied
+            for a user or group. This class cannot be inherited.</summary>
+            <remarks><para></para></remarks>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.DirectoryAuditRule">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.DirectoryAuditRule.#ctor(System.Security.Principal.IdentityReference,Asprosys.Security.AccessControl.DirectoryRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.DirectoryAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="directoryRights">The directory rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.DirectoryAuditRule.#ctor(System.String,Asprosys.Security.AccessControl.DirectoryRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.DirectoryAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="directoryRights">The directory rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="P:Asprosys.Security.AccessControl.DirectoryAuditRule.DirectoryRights">
+            <summary>
+            Gets the directory rights associated with this rule.
+            </summary>
+            <value>The combination of <see cref="P:Asprosys.Security.AccessControl.DirectoryAuditRule.DirectoryRights"/> values that defines
+            the rights associated with this rule.</value>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.FileAccessRule">
+            <summary>Represents a set of FileAccessRights rights allowed or denied
+            for a user or group. This class cannot be inherited.</summary>
+            <remarks><para></para></remarks>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.FileAuditRule">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.FileAuditRule.#ctor(System.Security.Principal.IdentityReference,Asprosys.Security.AccessControl.FileRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.FileAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="fileRights">The file rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.FileAuditRule.#ctor(System.String,Asprosys.Security.AccessControl.FileRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.FileAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="fileRights">The file rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="P:Asprosys.Security.AccessControl.FileAuditRule.FileRights">
+            <summary>
+            Gets the file rights associated with this rule.
+            </summary>
+            <value>The combination of <see cref="P:Asprosys.Security.AccessControl.FileAuditRule.FileRights"/> values that defines
+            the rights associated with this rule.</value>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.FileMappingAccessRule">
+            <summary>Represents a set of FileMappingAccessRights rights allowed or denied
+            for a user or group. This class cannot be inherited.</summary>
+            <remarks><para></para></remarks>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.FileMappingAuditRule">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.FileMappingAuditRule.#ctor(System.Security.Principal.IdentityReference,Asprosys.Security.AccessControl.FileMappingRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.FileMappingAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="fileMappingRights">The file mapping rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.FileMappingAuditRule.#ctor(System.String,Asprosys.Security.AccessControl.FileMappingRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.FileMappingAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="fileMappingRights">The file mapping rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="P:Asprosys.Security.AccessControl.FileMappingAuditRule.FileMappingRights">
+            <summary>
+            Gets the file mapping rights associated with this rule.
+            </summary>
+            <value>The combination of <see cref="P:Asprosys.Security.AccessControl.FileMappingAuditRule.FileMappingRights"/> values that defines
+            the rights associated with this rule.</value>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.JobObjectAccessRule">
+            <summary>Represents a set of JobObjectAccessRights rights allowed or denied
+            for a user or group. This class cannot be inherited.</summary>
+            <remarks><para></para></remarks>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.JobObjectAuditRule">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.JobObjectAuditRule.#ctor(System.Security.Principal.IdentityReference,Asprosys.Security.AccessControl.JobObjectRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.JobObjectAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="jobObjectRights">The job object rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.JobObjectAuditRule.#ctor(System.String,Asprosys.Security.AccessControl.JobObjectRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.JobObjectAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="jobObjectRights">The job object rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="P:Asprosys.Security.AccessControl.JobObjectAuditRule.JobObjectRights">
+            <summary>
+            Gets the job object rights associated with this rule.
+            </summary>
+            <value>The combination of <see cref="P:Asprosys.Security.AccessControl.JobObjectAuditRule.JobObjectRights"/> values that defines
+            the rights associated with this rule.</value>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.PipeAccessRule">
+            <summary>Represents a set of PipeAccessRights rights allowed or denied
+            for a user or group. This class cannot be inherited.</summary>
+            <remarks><para></para></remarks>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.PipeAuditRule">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.PipeAuditRule.#ctor(System.Security.Principal.IdentityReference,Asprosys.Security.AccessControl.PipeRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.PipeAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="pipeRights">The pipe rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.PipeAuditRule.#ctor(System.String,Asprosys.Security.AccessControl.PipeRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.PipeAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="pipeRights">The pipe rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="P:Asprosys.Security.AccessControl.PipeAuditRule.PipeRights">
+            <summary>
+            Gets the pipe rights associated with this rule.
+            </summary>
+            <value>The combination of <see cref="P:Asprosys.Security.AccessControl.PipeAuditRule.PipeRights"/> values that defines
+            the rights associated with this rule.</value>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.PrinterAuditRule">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.PrinterAuditRule.#ctor(System.Security.Principal.IdentityReference,Asprosys.Security.AccessControl.PrinterRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.PrinterAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="serviceRights">The service rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.PrinterAuditRule.#ctor(System.String,Asprosys.Security.AccessControl.PrinterRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.PrinterAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="serviceRights">The service rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="P:Asprosys.Security.AccessControl.PrinterAuditRule.PrinterRights">
+            <summary>
+            Gets the printer rights associated with this rule.
+            </summary>
+            <value>The combination of <see cref="P:Asprosys.Security.AccessControl.PrinterAuditRule.PrinterRights"/> values that defines
+            the rights associated with this rule.</value>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.ProcessAccessRule">
+            <summary>Represents a set of FileMappingAccessRights rights allowed or denied
+            for a user or group. This class cannot be inherited.</summary>
+            <remarks><para></para></remarks>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.ProcessAuditRule">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.ProcessAuditRule.#ctor(System.Security.Principal.IdentityReference,Asprosys.Security.AccessControl.ProcessRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.ProcessAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="processRights">The process rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.ProcessAuditRule.#ctor(System.String,Asprosys.Security.AccessControl.ProcessRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.ProcessAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="processRights">The process rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="P:Asprosys.Security.AccessControl.ProcessAuditRule.ProcessRights">
+            <summary>
+            Gets the process rights associated with this rule.
+            </summary>
+            <value>The combination of <see cref="P:Asprosys.Security.AccessControl.ProcessAuditRule.ProcessRights"/> values that defines
+            the rights associated with this rule.</value>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.RegistryKeyAccessRule">
+            <summary>Represents a set of RegistryKeyAccessRights rights allowed or denied
+            for a user or group. This class cannot be inherited.</summary>
+            <remarks><para></para></remarks>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.RegistryKeyAuditRule">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.RegistryKeyAuditRule.#ctor(System.Security.Principal.IdentityReference,Asprosys.Security.AccessControl.RegistryKeyRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.RegistryKeyAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="registryKeyRights">The registry key rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.RegistryKeyAuditRule.#ctor(System.String,Asprosys.Security.AccessControl.RegistryKeyRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.RegistryKeyAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="registryKeyRights">The registry key rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="P:Asprosys.Security.AccessControl.RegistryKeyAuditRule.RegistryKeyRights">
+            <summary>
+            Gets the registry key rights associated with this rule.
+            </summary>
+            <value>The combination of <see cref="P:Asprosys.Security.AccessControl.RegistryKeyAuditRule.RegistryKeyRights"/> values that defines
+            the rights associated with this rule.</value>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.ServiceAuditRule">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.ServiceAuditRule.#ctor(System.Security.Principal.IdentityReference,Asprosys.Security.AccessControl.ServiceRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.ServiceAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="serviceRights">The service rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.ServiceAuditRule.#ctor(System.String,Asprosys.Security.AccessControl.ServiceRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.ServiceAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="serviceRights">The service rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="P:Asprosys.Security.AccessControl.ServiceAuditRule.ServiceRights">
+            <summary>
+            Gets the service rights associated with this rule.
+            </summary>
+            <value>The combination of <see cref="P:Asprosys.Security.AccessControl.ServiceAuditRule.ServiceRights"/> values that defines
+            the rights associated with this rule.</value>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.ShareAuditRule">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.ShareAuditRule.#ctor(System.Security.Principal.IdentityReference,Asprosys.Security.AccessControl.ShareRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.ShareAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="shareRights">The share rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.ShareAuditRule.#ctor(System.String,Asprosys.Security.AccessControl.ShareRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.ShareAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="shareRights">The share rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="P:Asprosys.Security.AccessControl.ShareAuditRule.ShareRights">
+            <summary>
+            Gets the share rights associated with this rule.
+            </summary>
+            <value>The combination of <see cref="P:Asprosys.Security.AccessControl.ShareAuditRule.ShareRights"/> values that defines
+            the rights associated with this rule.</value>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.ThreadAccessRule">
+            <summary>Represents a set of FileMappingAccessRights rights allowed or denied
+            for a user or group. This class cannot be inherited.</summary>
+            <remarks><para></para></remarks>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.ThreadAuditRule">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.ThreadAuditRule.#ctor(System.Security.Principal.IdentityReference,Asprosys.Security.AccessControl.ThreadRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.ThreadAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="threadRights">The thread rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.ThreadAuditRule.#ctor(System.String,Asprosys.Security.AccessControl.ThreadRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.ThreadAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="threadRights">The thread rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="P:Asprosys.Security.AccessControl.ThreadAuditRule.ThreadRights">
+            <summary>
+            Gets the thread rights associated with this rule.
+            </summary>
+            <value>The combination of <see cref="P:Asprosys.Security.AccessControl.ThreadAuditRule.ThreadRights"/> values that defines
+            the rights associated with this rule.</value>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.TokenAccessRule">
+            <summary>Represents a set of TokenAccessRights rights allowed or denied
+            for a user or group. This class cannot be inherited.</summary>
+            <remarks><para></para></remarks>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.TokenAuditRule">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.TokenAuditRule.#ctor(System.Security.Principal.IdentityReference,Asprosys.Security.AccessControl.TokenRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.TokenAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="tokenRights">The token rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.TokenAuditRule.#ctor(System.String,Asprosys.Security.AccessControl.TokenRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.TokenAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="tokenRights">The token rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="P:Asprosys.Security.AccessControl.TokenAuditRule.TokenRights">
+            <summary>
+            Gets the token rights associated with this rule.
+            </summary>
+            <value>The combination of <see cref="P:Asprosys.Security.AccessControl.TokenAuditRule.TokenRights"/> values that defines
+            the rights associated with this rule.</value>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.WaitObjectAccessRule">
+            <summary>Represents a set of WaitObjectAccessRights rights allowed or denied
+            for a user or group. This class cannot be inherited.</summary>
+            <remarks><para></para></remarks>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.WaitObjectAuditRule.#ctor(System.Security.Principal.IdentityReference,Asprosys.Security.AccessControl.WaitObjectRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.WaitObjectAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="waitObjectRights">The wait object rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.WaitObjectAuditRule.#ctor(System.String,Asprosys.Security.AccessControl.WaitObjectRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.WaitObjectAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="waitObjectRights">The wait object rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="P:Asprosys.Security.AccessControl.WaitObjectAuditRule.WaitObjectRights">
+            <summary>
+            Gets the wait object rights associated with this rule.
+            </summary>
+            <value>The combination of <see cref="P:Asprosys.Security.AccessControl.WaitObjectAuditRule.WaitObjectRights"/> values that defines
+            the rights associated with this rule.</value>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.WindowStationAccessRule">
+            <summary>Represents a set of WindowStationAccessRights rights allowed or denied
+            for a user or group. This class cannot be inherited.</summary>
+            <remarks><para></para></remarks>
+        </member>
+        <member name="T:Asprosys.Security.AccessControl.WindowStationAuditRule">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.WindowStationAuditRule.#ctor(System.Security.Principal.IdentityReference,Asprosys.Security.AccessControl.WindowStationRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.WindowStationAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="windowStationRights">The window station rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="M:Asprosys.Security.AccessControl.WindowStationAuditRule.#ctor(System.String,Asprosys.Security.AccessControl.WindowStationRights,System.Security.AccessControl.AuditFlags)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Asprosys.Security.AccessControl.WindowStationAuditRule"/> class.
+            </summary>
+            <param name="identity">The identity.</param>
+            <param name="windowStationRights">The window station rights.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="P:Asprosys.Security.AccessControl.WindowStationAuditRule.WindowStationRights">
+            <summary>
+            Gets the window station rights associated with this rule.
+            </summary>
+            <value>The combination of <see cref="P:Asprosys.Security.AccessControl.WindowStationAuditRule.WindowStationRights"/> values that defines
+            the rights associated with this rule.</value>
+        </member>
+    </members>
+</doc>
