@@ -9,6 +9,9 @@
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern IntPtr GetEnvironmentStrings();
 
+        [DllImport("kernel32.dll")]
+        public static extern uint ResumeThread(IntPtr hThread);
+
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         public static  extern bool CreateProcess
         (
@@ -37,6 +40,36 @@
             IntPtr lpEnvironment,
             String lpCurrentDirectory,
             [In] StartupInfo lpStartupInfo,
+            out ProcessInformation lpProcessInformation
+        );
+
+        [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        public static extern bool CreateProcessWithLogon
+        (
+            String             lpUserName,
+            String             lpDomain,
+            String             lpPassword,
+            LogonFlags         dwLogonFlags,
+            String             lpApplicationName,
+            StringBuilder      lpCommandLine,
+            CreateProcessFlags dwCreationFlags,
+            IntPtr             lpEnvironment,
+            String             lpCurrentDirectory,
+            [In] StartupInfo   lpStartupInfo,
+            out ProcessInformation lpProcessInformation
+        );
+
+        [DllImport("advapi32", SetLastError = true, CharSet = CharSet.Unicode)]
+        public static extern bool CreateProcessWithToken
+        (
+            IntPtr hToken, 
+            LogonFlags dwLogonFlags, 
+            String lpApplicationName, 
+            String lpCommandLine, 
+            CreateProcessFlags dwCreationFlags, 
+            IntPtr lpEnvironment, 
+            String lpCurrentDirectory, 
+            [In] StartupInfo lpStartupInfo, 
             out ProcessInformation lpProcessInformation
         );
 

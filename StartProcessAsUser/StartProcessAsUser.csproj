@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -46,16 +46,13 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="JobObject.cs" />
     <Compile Include="PInvoke\CloseHandle.cs" />
     <Compile Include="PInvoke\Constants.cs" />
+    <Compile Include="PInvoke\CreateEnvironmentBlock.cs" />
     <Compile Include="PInvoke\CreateProcess.cs" />
     <Compile Include="PInvoke\DuplicateTokenEx.cs" />
     <Compile Include="PInvoke\Enums.cs" />

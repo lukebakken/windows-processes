@@ -2,16 +2,21 @@
 {
     using System;
     using System.ComponentModel;
+    using System.Runtime.InteropServices;
     using System.Security.AccessControl;
     using System.Text;
     using Asprosys.Security.AccessControl;
     using PInvoke;
 
+    // http://www.installsetupconfig.com/win32programming/windowstationsdesktops13_4.html
+    // http://bytes.com/topic/net/answers/577257-impersonation-vs-job-api
     static class Program
     {
+        const string workingDir = @"C:\tmp";
+
         // create with 'net user test_user password /add'
         const string userName = "test_user";
-        const string password = "password";
+        const string password = "Pass@word1";
 
         static void Main(string[] args)
         {
@@ -28,8 +33,9 @@
                     {
                         try
                         {
-                            var p = CreateProcess(i);
-                            jobObject.AddProcess(p);
+                            var p = DoCreateProcessAsUser();
+                            // var p = DoCreateProcessWithLogon();
+                            // jobObject.AddProcess(p.hProcess);
                         }
                         catch (Win32Exception ex)
                         {
@@ -40,7 +46,7 @@
                             Console.Error.WriteLine("ERROR: '{0}'", ex.Message);
                         }
                     }
-                    Console.WriteLine("Type 'again' to run again, hit enter to exit...");
+                    Console.WriteLine("Type 'again' to create again, hit enter to exit...");
                     string cmd = Console.ReadLine().Trim().ToLowerInvariant();
                     if (cmd == "again")
                     {
@@ -54,35 +60,126 @@
             }
         }
 
-        private static IntPtr CreateProcess(ushort i)
+        private static NativeMethods.ProcessInformation DoCreateProcessWithLogon()
         {
-            IntPtr hToken = IntPtr.Zero;
+            var cmdLine = new StringBuilder(1024);
+            // cmdLine.Append(@"powershell.exe -NoExit -Command ""dir env:"""); // Look at the environment
+            cmdLine.Append(@"cmd.exe /k set"); // Look at the environment
 
-            if (NativeMethods.RevertToSelf())
+            var createProcessFlags = NativeMethods.CreateProcessFlags.CREATE_NEW_CONSOLE |
+                NativeMethods.CreateProcessFlags.CREATE_UNICODE_ENVIRONMENT;
+            /*
+                NativeMethods.CreateProcessFlags.CREATE_NO_WINDOW |
+                NativeMethods.CreateProcessFlags.CREATE_BREAKAWAY_FROM_JOB |
+                NativeMethods.CreateProcessFlags.CREATE_NEW_CONSOLE;
+             */
+
+            var startupInfo = new NativeMethods.StartupInfo();
+
+            NativeMethods.ProcessInformation pi;
+
+            if (NativeMethods.CreateProcessWithLogon(userName, ".", password,
+                NativeMethods.LogonFlags.LOGON_WITH_PROFILE,
+                null,
+                cmdLine,
+                createProcessFlags,
+                IntPtr.Zero,
+                workingDir,
+                startupInfo,
+                out pi))
             {
-                if (NativeMethods.LogonUser(userName, ".", password,
-                        NativeMethods.LogonType.LOGON32_LOGON_INTERACTIVE,
-                        NativeMethods.LogonProvider.LOGON32_PROVIDER_DEFAULT, out hToken))
-                {
+                Console.WriteLine("create-process-with-logon cmd: '{0}' pid: '{1}'", cmdLine.ToString(), pi.dwProcessId);
+                return pi;
+            }
+            else
+            {
+                throw new Win32Exception();
+            }
+        }
 
-                    IntPtr primaryToken = IntPtr.Zero;
-                    var sa = new NativeMethods.SecurityAttributes();
-                    if (NativeMethods.DuplicateTokenEx(
-                        hToken,
-                        NativeMethods.Constants.GENERIC_ALL_ACCESS,
-                        sa,
-                        NativeMethods.SecurityImpersonationLevel.SecurityImpersonation,
-                        NativeMethods.TokenType.TokenPrimary,
-                        out primaryToken))
+        private static NativeMethods.ProcessInformation DoCreateProcessAsUser()
+        {
+            var startupInfo = new NativeMethods.StartupInfo();
+
+            string lpApplicationName = @"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe";
+            // string lpApplicationName = @"C:\Windows\System32\cmd.exe";
+
+            var cmdLine = new StringBuilder(1024);
+            // NB: /k will keep window open. Try running powershell from the window and you won't see any modules available. Weird.
+            // This works, however: runas /user:test_user /noprofile /savecred "powershell -NoExit"
+            // cmdLine.Append(@" /k set");
+
+            // Other commands to try:
+            // cmdLine.Append(@" -NoExit -Command ""dir env:"""); // Look at the environment
+            // cmdLine.Append(@"powershell.exe -InputFormat None -NoLogo -NoProfile -NonInteractive -Command ""echo 'START'; Start-Sleep -s 15; echo 'STOP'""");
+            // cmdLine.Append(@"cmd /c ping 127.0.0.1 -n 15 -w 1000"); // Useful for "sleep"
+            cmdLine.Append(@" -InputFormat None -NoLogo -NoProfile -NonInteractive -Command ""Add-Content -Path C:\tmp\test.txt -Value FOO""");
+
+            // Create structs
+            var saProcessAttributes = new NativeMethods.SecurityAttributes();
+            var saThreadAttributes = new NativeMethods.SecurityAttributes();
+
+            // Now create the process as the user
+            NativeMethods.ProcessInformation pi;
+
+            var createProcessFlags =
+                NativeMethods.CreateProcessFlags.CREATE_NO_WINDOW |
+                NativeMethods.CreateProcessFlags.CREATE_UNICODE_ENVIRONMENT;
+                // NativeMethods.CreateProcessFlags.CREATE_NEW_CONSOLE; // Remove this to have a hidden window. Having this here allows you to see output
+
+            IntPtr primaryToken = Utils.LogonAndGetPrimaryToken(userName, password);
+
+            /*
+            uint sessionId = 1;
+            if (NativeMethods.SetTokenInformation(primaryToken,
+                NativeMethods.TokenInformationClass.TokenSessionId,
+                ref sessionId, (uint)Marshal.SizeOf(sessionId)))
+            {
+             */
+            if (NativeMethods.CreateProcessWithToken(primaryToken, NativeMethods.LogonFlags.LOGON_WITH_PROFILE,
+                lpApplicationName, cmdLine.ToString(), createProcessFlags, IntPtr.Zero, workingDir,
+                startupInfo, out pi))
+            {
+                Console.WriteLine("create-process-with-token cmd: '{0}' pid: '{1}'", cmdLine.ToString(), pi.dwProcessId);
+                return pi;
+            }
+            else
+            {
+                throw new Win32Exception();
+            }
+            /*
+            }
+            else
+            {
+                throw new Win32Exception();
+            }
+             */
+
+            /*
+            var profileInfo = new NativeMethods.ProfileInfo();
+            profileInfo.lpUserName = userName;
+
+            if (NativeMethods.LoadUserProfile(primaryToken, profileInfo))
+            {
+                IntPtr envBlock = IntPtr.Zero;
+                if (NativeMethods.CreateEnvironmentBlock(out envBlock, primaryToken, false))
+                {
+                    // http://odetocode.com/blogs/scott/archive/2004/10/29/createprocessasuser.aspx
+                    if (NativeMethods.CreateProcessAsUser(
+                        primaryToken,
+                        lpApplicationName,
+                        cmdLine, // lpCommandLine
+                        saProcessAttributes,
+                        saThreadAttributes,
+                        false, // bInheritHandles
+                        createProcessFlags,
+                        envBlock,
+                        workingDir,
+                        startupInfo,
+                        out pi))
                     {
-                        try
-                        {
-                            return DoCreateProcessAsUser(primaryToken);
-                        }
-                        finally
-                        {
-                            NativeMethods.CloseHandle(primaryToken);
-                        }
+                        Console.WriteLine("create-process-as-user cmd: '{0}' pid: '{1}'", cmdLine.ToString(), pi.dwProcessId);
+                        return pi;
                     }
                     else
                     {
@@ -98,84 +195,7 @@
             {
                 throw new Win32Exception();
             }
-        }
-
-        private static IntPtr DoCreateProcessAsUser(IntPtr primaryToken)
-        {
-            var startupInfo = new NativeMethods.StartupInfo();
-
-            string lpApplicationName = null;
-
-            var cmdLine = new StringBuilder(1024);
-            cmdLine.Append(@"cmd /c ""set && pause""");
-            // cmdLine.Append(@"powershell.exe -NoExit -Command ""dir env:"""); // Look at the environment
-            // cmdLine.Append(@"powershell.exe -InputFormat None -NoLogo -NoProfile -NonInteractive -Command ""echo 'START'; Start-Sleep -s 15; echo 'STOP'""");
-            // cmdLine.Append(@"cmd /c ping 127.0.0.1 -n 15 -w 1000");
-
-            // Create structs
-            var saProcessAttributes = new NativeMethods.SecurityAttributes();
-            var saThreadAttributes = new NativeMethods.SecurityAttributes();
-
-            // Now create the process as the user
-            NativeMethods.ProcessInformation pi;
-
-            var createProcessFlags = NativeMethods.CreateProcessFlags.CREATE_NO_WINDOW |
-                NativeMethods.CreateProcessFlags.CREATE_UNICODE_ENVIRONMENT |
-                NativeMethods.CreateProcessFlags.CREATE_NEW_CONSOLE; // Remove this to have a hidden window. Having this here allows you to see output
-
-            // IntPtr envStrings = NativeMethods.GetEnvironmentStrings();
-            IntPtr envStrings = IntPtr.Zero; // inherit the parent environment which I think is what is screwing up powershell
-
-            string workingDir = @"C:\tmp";
-
-            if (primaryToken == IntPtr.Zero)
-            {
-                if (NativeMethods.CreateProcess(
-                    lpApplicationName,
-                    cmdLine.ToString(),
-                    saProcessAttributes,
-                    saThreadAttributes,
-                    false, // bInheritHandles
-                    createProcessFlags,
-                    envStrings,
-                    workingDir,
-                    startupInfo,
-                    out pi))
-                {
-                    NativeMethods.CloseHandle(pi.hThread);
-                    Console.WriteLine("create-process cmd: '{0}' pid: '{1}'", cmdLine.ToString(), pi.dwProcessId);
-                    return pi.hProcess;
-                }
-                else
-                {
-                    throw new Win32Exception();
-                }
-            }
-            else
-            {
-                // http://odetocode.com/blogs/scott/archive/2004/10/29/createprocessasuser.aspx
-                if (NativeMethods.CreateProcessAsUser(
-                    primaryToken,
-                    lpApplicationName,
-                    cmdLine, // lpCommandLine
-                    saProcessAttributes,
-                    saThreadAttributes,
-                    false, // bInheritHandles
-                    createProcessFlags,
-                    envStrings,
-                    workingDir,
-                    startupInfo,
-                    out pi))
-                {
-                    NativeMethods.CloseHandle(pi.hThread);
-                    Console.WriteLine("create-process-as-user cmd: '{0}' pid: '{1}'", cmdLine.ToString(), pi.dwProcessId);
-                    return pi.hProcess;
-                }
-                else
-                {
-                    throw new Win32Exception();
-                }
-            }
+             */
         }
 
         private static void AddDesktopPermission()
