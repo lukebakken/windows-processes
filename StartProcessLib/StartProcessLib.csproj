@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6E2794EC-90F0-49AC-B80A-4CE091152499}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{3324447D-2457-404A-A1D8-B739C5150D2D}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StartProcessAsUser</RootNamespace>
-    <AssemblyName>StartProcessAsUser</AssemblyName>
+    <RootNamespace>StartProcessLib</RootNamespace>
+    <AssemblyName>StartProcessLib</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,11 +21,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <Prefer32Bit>false</Prefer32Bit>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -34,34 +30,42 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <Prefer32Bit>false</Prefer32Bit>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AsproLock, Version=0.5.0.4, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\AsproLock.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="DesktopPermissionManager.cs" />
+    <Compile Include="JobObject.cs" />
+    <Compile Include="PInvoke\CloseHandle.cs" />
+    <Compile Include="PInvoke\Constants.cs" />
+    <Compile Include="PInvoke\CreateEnvironmentBlock.cs" />
+    <Compile Include="PInvoke\CreateProcess.cs" />
+    <Compile Include="PInvoke\DuplicateTokenEx.cs" />
+    <Compile Include="PInvoke\Enums.cs" />
+    <Compile Include="PInvoke\GetCurrentThreadId.cs" />
+    <Compile Include="PInvoke\GetProcessWindowStation.cs" />
+    <Compile Include="PInvoke\GetThreadDesktop.cs" />
+    <Compile Include="PInvoke\JobObjectHandle.cs" />
+    <Compile Include="PInvoke\JobObjectInfoClass.cs" />
+    <Compile Include="PInvoke\JobObjectMethods.cs" />
+    <Compile Include="PInvoke\JobObjectStructs.cs" />
+    <Compile Include="PInvoke\LogonUser.cs" />
+    <Compile Include="PInvoke\NativeMethods.cs" />
+    <Compile Include="PInvoke\RevertToSelf.cs" />
+    <Compile Include="PInvoke\SafeUserTokenHandle.cs" />
+    <Compile Include="PInvoke\SecurityAttributes.cs" />
+    <Compile Include="PInvoke\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="app.manifest" />
+    <Reference Include="AsproLock">
+      <HintPath>..\lib\AsproLock.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.2.0.1.2\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StartProcessLib\StartProcessLib.csproj">
-      <Project>{3324447d-2457-404a-a1d8-b739c5150d2d}</Project>
-      <Name>StartProcessLib</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

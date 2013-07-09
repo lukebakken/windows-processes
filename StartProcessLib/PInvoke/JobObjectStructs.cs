@@ -5,12 +5,12 @@
 // Modified by Luke Bakken from the original.
 // -----------------------------------------------------------------------
 
-namespace StartProcessAsUser.PInvoke
+namespace StartProcessLib.PInvoke
 {
     using System;
     using System.Runtime.InteropServices;
 
-    internal partial class NativeMethods
+    public partial class NativeMethods
     {
         /// <summary>
         /// Contains basic and extended limit information for a job object.

@@ -1,9 +1,9 @@
-﻿namespace StartProcessAsUser.PInvoke
+﻿namespace StartProcessLib.PInvoke
 {
     using System;
     using System.Runtime.InteropServices;
 
-    internal partial class NativeMethods
+    public partial class NativeMethods
     {
         [StructLayout(LayoutKind.Sequential)]
         public class SecurityAttributes

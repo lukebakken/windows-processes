@@ -1,11 +1,11 @@
-﻿namespace StartProcessAsUser.PInvoke
+﻿namespace StartProcessLib.PInvoke
 {
-    internal partial class NativeMethods
+    public partial class NativeMethods
     {
         /// <summary>
         /// Used for calling the Win API
         /// </summary>
-        internal enum JobObjectInfoClass
+        public enum JobObjectInfoClass
         {
             /// <summary>
             /// The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_BASIC_ACCOUNTING_INFORMATION structure.

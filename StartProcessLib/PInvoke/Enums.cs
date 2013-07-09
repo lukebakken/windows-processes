@@ -1,8 +1,8 @@
-﻿namespace StartProcessAsUser.PInvoke
+﻿namespace StartProcessLib.PInvoke
 {
     using System;
 
-    internal partial class NativeMethods
+    public partial class NativeMethods
     {
         [Flags]
         public enum LogonType

@@ -1,9 +1,9 @@
-﻿namespace StartProcessAsUser.PInvoke
+﻿namespace StartProcessLib.PInvoke
 {
     using System;
     using System.ComponentModel;
 
-    internal static class Utils
+    public static class Utils
     {
         public static IntPtr LogonAndGetPrimaryToken(string userName, string password)
         {

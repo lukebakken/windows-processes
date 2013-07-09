@@ -5,13 +5,13 @@
 // Modified by Luke Bakken from the original.
 // -----------------------------------------------------------------------
 
-namespace StartProcessAsUser.PInvoke
+namespace StartProcessLib.PInvoke
 {
     using System.Runtime.ConstrainedExecution;
     using System.Security.Permissions;
     using Microsoft.Win32.SafeHandles;
 
-    internal partial class NativeMethods
+    public partial class NativeMethods
     {
         /// <summary>
         /// A safe handle for Job Object.

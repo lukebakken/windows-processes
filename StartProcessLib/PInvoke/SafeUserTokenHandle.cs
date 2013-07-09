@@ -1,4 +1,4 @@
-namespace StartProcessAsUser.PInvoke
+namespace StartProcessLib.PInvoke
 {
     using System;
     using Microsoft.Win32.SafeHandles;

@@ -1,10 +1,10 @@
-﻿namespace StartProcessAsUser.PInvoke
+﻿namespace StartProcessLib.PInvoke
 {
     using System;
     using System.Runtime.InteropServices;
     using System.Text;
 
-    internal partial class NativeMethods
+    public partial class NativeMethods
     {
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern IntPtr GetEnvironmentStrings();

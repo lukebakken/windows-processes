@@ -5,7 +5,7 @@
 // Modified by Luke Bakken from the original.
 // -----------------------------------------------------------------------
 
-namespace StartProcessAsUser
+namespace StartProcessLib
 {
     using System;
     using System.Collections.Generic;

@@ -2,27 +2,28 @@
 {
     using System;
     using System.ComponentModel;
-    using System.Runtime.InteropServices;
     using System.Security.AccessControl;
     using System.Text;
     using Asprosys.Security.AccessControl;
-    using PInvoke;
+    using StartProcessLib;
+    using StartProcessLib.PInvoke;
 
     // http://www.installsetupconfig.com/win32programming/windowstationsdesktops13_4.html
     // http://bytes.com/topic/net/answers/577257-impersonation-vs-job-api
     static class Program
     {
         const string workingDir = @"C:\tmp";
-
         // create with 'net user test_user password /add'
         const string userName = "test_user";
         const string password = "Pass@word1";
+
+        private static readonly DesktopPermissionManager permissionManager = new DesktopPermissionManager(userName);
 
         static void Main(string[] args)
         {
             try
             {
-                AddDesktopPermission();
+                permissionManager.AddDesktopPermission();
 
                 using (var jobObject = new JobObject("StartProcessAsUserJob"))
                 {
@@ -56,7 +57,7 @@
             }
             finally
             {
-                RemoveDesktopPermission();
+                permissionManager.RemoveDesktopPermission();
             }
         }
 
@@ -196,46 +197,6 @@
                 throw new Win32Exception();
             }
              */
-        }
-
-        private static void AddDesktopPermission()
-        {
-            try
-            {
-                IntPtr hWinSta = NativeMethods.GetProcessWindowStation();
-                var ws = new WindowStationSecurity(hWinSta, AccessControlSections.Access);
-                ws.AddAccessRule(new WindowStationAccessRule(userName, WindowStationRights.AllAccess, AccessControlType.Allow));
-                ws.AcceptChanges();
-
-                IntPtr hDesk = NativeMethods.GetThreadDesktop(NativeMethods.GetCurrentThreadId());
-                var ds = new DesktopSecurity(hDesk, AccessControlSections.Access);
-                ds.AddAccessRule(new DesktopAccessRule(userName, DesktopRights.AllAccess, AccessControlType.Allow));
-                ds.AcceptChanges();
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine(ex.Message);
-            }
-        }
-
-        private static void RemoveDesktopPermission()
-        {
-            try
-            {
-                IntPtr hWinSta = NativeMethods.GetProcessWindowStation();
-                var ws = new WindowStationSecurity(hWinSta, AccessControlSections.Access);
-                ws.RemoveAccessRule(new WindowStationAccessRule(userName, WindowStationRights.AllAccess, AccessControlType.Allow));
-                ws.AcceptChanges();
-
-                IntPtr hDesk = NativeMethods.GetThreadDesktop(NativeMethods.GetCurrentThreadId());
-                var ds = new DesktopSecurity(hDesk, AccessControlSections.Access);
-                ds.RemoveAccessRule(new DesktopAccessRule(userName, DesktopRights.AllAccess, AccessControlType.Allow));
-                ds.AcceptChanges();
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine(ex.Message);
-            }
         }
     }
 }

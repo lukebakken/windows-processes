@@ -1,9 +1,9 @@
-﻿namespace StartProcessAsUser.PInvoke
+﻿namespace StartProcessLib.PInvoke
 {
     using System;
     using System.Runtime.InteropServices;
 
-    internal partial class NativeMethods
+    public partial class NativeMethods
     {
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern Boolean LogonUser(
